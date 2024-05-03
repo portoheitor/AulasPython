@@ -1,0 +1,1 @@
+from aula38_packge_exemplo.modulo import *
