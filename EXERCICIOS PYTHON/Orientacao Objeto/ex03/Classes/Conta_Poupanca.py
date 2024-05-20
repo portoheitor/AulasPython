@@ -1,24 +1,25 @@
-import Conta
 import random
+
+from Conta import Conta
 
 
 class CriarContaPoupanca(Conta):
-    AGEN_CC_POPANCA = random.choice([500, 599])
+    __AGEN_POUPANCA = [500, 599]
 
-    def __init__(self):
+    def __init__(self, banco:object):
         super().__init__()
-        super()._agencia = self.AGEN_CC_POPANCA
+        self.agencia = random.choice(self.__AGEN_POUPANCA)
+        self.num_conta = self._NUM_CONTAS__
+        self._banco = banco
 
-    def sacar(self, valor: int | float) -> bool:
+    def sacar(self, valor: int | float):
         try:
-            if valor <= self._saldo:
-                self._saldo -= valor
-                return True
-            else:
-                return False
+           if self.saldo >= valor:
+               self.saldo -= valor
         except Exception as error:
             print(f'Error: {error.__class__.__name__}\n\n{error}\n\n{error.args}')
 
     def depositar(self, valor: int | float) -> bool:
-        super()._saldo += valor
+        self.saldo += valor
         return True
+

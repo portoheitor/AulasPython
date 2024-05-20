@@ -5,12 +5,13 @@ Tera o methodo sacar para ser sobreescrito
 """
 
 from abc import ABC, abstractmethod
-import random
 
 
 class Conta(ABC):
+    _NUM_CONTAS__ = 0
 
     def __init__(self):
+        Conta._NUM_CONTAS__ += 1
         self._agencia = False
         self._num_conta = False
         self._saldo = 0.00
@@ -52,5 +53,5 @@ class Conta(ABC):
             print(f'Error: {error.__class__.__name__}\n\n{error}\n\n{error.args}')
 
     @abstractmethod
-    def sacar(self, valor: int | float) -> bool:
+    def sacar(self, valor: int | float):
         ...

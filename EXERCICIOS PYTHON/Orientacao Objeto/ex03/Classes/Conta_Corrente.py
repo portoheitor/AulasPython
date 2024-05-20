@@ -4,52 +4,77 @@ from Conta import Conta
 
 
 class CriarContaCorrente(Conta):
-    _TARIFA_SAQUE_CC_CORRENTE: float = 0.12
-    _LIMITE_CHEQUE_ESPECIAL = 100
+    """
+    Class criar conta corrente do cliente
+    Conta corrente tem um limite pre estabelecido de R$100,00 de cheque especial
+    Saques na conta corrente tem tarifa padrao adicionada ao efetuar saques.
+    """
+    __TARIFA_SAQUE_CC_CORRENTE: float = 0.12
+    __LIMITE_CHEQUE_ESPECIAL = 100
+    __AGEN_CC_CORRENTE = [555, 157, 332]
 
-    def __init__(self) -> None:
+    def __init__(self, banco:object) -> None:
         super().__init__()
-        self.agencia = random.choice([555, 157, 332])
-        self.num_conta = random.randint(1, 10000)
+        self.agencia = random.choice(self.__AGEN_CC_CORRENTE)
+        self.num_conta = self._NUM_CONTAS__
         self._cheque_especial = 0
-        self._cliente = None
+        self._banco = banco
 
-    def sacar(self, valor: int | float) -> bool:
+
+    @property
+    def cheque_especial(self):
+        return self._cheque_especial
+
+    @cheque_especial.setter
+    def cheque_especial(self, valor):
+        self._cheque_especial = valor
+
+    def sacar(self, valor: int | float):
+        """
+        Metodo de sacar, verifica de qual credito o cliente quer sacar, se saldo conta ou chque especial
+        se o limite da conta estiver zerado ele informa que nao tem saldo,
+        se o limite de chueque especial ja estiver extourado informa que nao tem mais limite,
+        caso contarrio efetua o saca de uma das duas opcoes disponiveis caso aja credito
+        """
         try:
-            if self.saldo >= valor:
-                self.saldo -= valor
+            conta = input(f'Escolha a opcao para Sacar:\n'
+                          f'- Saque Conta Corrente [1]\n- Saque Limite Cheque Especial [2]')
+            if conta == '1':
+                if self.saldo >= valor:
+                    debitar = (valor * self.__TARIFA_SAQUE_CC_CORRENTE)
+                    self.saldo -= debitar
+                else:
+                    raise ValueError('Saldo insulficiente!')
+            elif conta == '2':
+                if self._cheque_especial <= self.__LIMITE_CHEQUE_ESPECIAL:
+                    debitar = (valor * self.__TARIFA_SAQUE_CC_CORRENTE)
+                    self._cheque_especial -= debitar
+                else:
+                    raise ValueError('Sem limite Cheque Especial!')
             else:
-                raise ValueError('Saldo insulficiente!')
+                raise ValueError('Digitar apenas as opcoes 1 ou 2')
         except Exception as error:
             print(f'Error: {error.__class__.__name__}\n\n{error}\n\n{error.args}')
 
-    def debitar_cheque_especial(self) -> int | float:
+    def deposita(self, valor: int | float) -> None:
+        """
+        Metodo verifica se o valor do cheque especial é negativo, se for atualiza o valor do chuque especial
+        Se o valor do deposito for sulficiente para cobrir e sobrar dinheiro a sobra vai para o saldo da conta
+        Se o cheque especial estiver zerado o valor integral vai para o saldo da conta
+        """
         try:
-            saldo = self.saldo
-            cheque_especial = self._cheque_especial
-            if saldo >= cheque_especial:
-                valor_debitar = cheque_especial
-                return valor_debitar
+            if self._cheque_especial < 0:
+                diferenca = 0
+                self._cheque_especial += valor
+                if self._cheque_especial >= 0:
+                    diferenca = self._cheque_especial - 0
+                    self._cheque_especial -= diferenca
+                    self.saldo += diferenca
+                else:
+                    return self.deposita(diferenca)
             else:
-                valor_debitar = saldo
-                return valor_debitar
+                self.saldo += valor
+
         except Exception as error:
             print(f'Error: {error.__class__.__name__}\n\n{error}\n\n{error.args}')
 
-    def depositar(self, valor: int | float) -> None:
-        try:
-            self.saldo = valor
-        except Exception as error:
-            print(f'Error: {error.__class__.__name__}\n\n{error}\n\n{error.args}')
-
-
-c1 = CriarContaCorrente()
-c1.depositar(30)
-print(c1.saldo, c1.num_conta, c1.agencia)
-
-c1.sacar(40)
-print(c1.saldo, c1.num_conta, c1.agencia)
-
-#
-# c2 = CriarContaCorrente()
-# print(c2.saldo, c2.num_conta, c2.agencia)
