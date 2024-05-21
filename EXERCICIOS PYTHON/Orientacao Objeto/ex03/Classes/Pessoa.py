@@ -2,9 +2,10 @@ from abc import ABC, abstractmethod
 
 
 class Pessoa():
-    def __init__(self):
-        self._nome = None
-        self._idade = None
+    def __init__(self, nome:str, idade:int, cpf:str):
+        self._nome = nome
+        self._idade = idade
+        self._cpf = cpf
 
     @property
     def nome(self):
@@ -18,7 +19,7 @@ class Pessoa():
             else:
                 raise ValueError
         except ValueError as erro:
-            print(f'Parametro deve ser uma String!\n {erro.args}\n{erro.__class__.__name__}')
+            raise erro.args
 
     @property
     def idade(self):
@@ -32,4 +33,12 @@ class Pessoa():
             else:
                 raise ValueError
         except ValueError as erro:
-            print(f'Parametro deve ser um INT !\n {erro.args}\n{erro.__class__.__name__}')
+            raise erro.args
+
+    @property
+    def cpf(self):
+        return self._cpf
+
+    @cpf.setter
+    def cpf(self, cpf:str):
+        self._cpf = cpf

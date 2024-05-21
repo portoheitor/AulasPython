@@ -8,13 +8,20 @@ from abc import ABC, abstractmethod
 
 
 class Conta(ABC):
-    _NUM_CONTAS__ = 0
+    _CONTAS_CRIADAS = 0
 
     def __init__(self):
-        Conta._NUM_CONTAS__ += 1
-        self._agencia = False
-        self._num_conta = False
+        Conta._CONTAS_CRIADAS += 1
+        self._agencia = None
+        self._num_conta = self._CONTAS_CRIADAS
         self._saldo = 0.00
+
+    @abstractmethod
+    def sacar(self, valor: int | float) -> bool:
+        ...
+    @abstractmethod
+    def depositar(self, valor: int | float) -> None:
+        ...
 
     @property
     def saldo(self):
@@ -22,7 +29,10 @@ class Conta(ABC):
 
     @saldo.setter
     def saldo(self, valor: int | float):
-        self._saldo = valor
+        try:
+            self._saldo += valor
+        except Exception as error:
+            raise error.args
 
     @property
     def agencia(self):
@@ -31,12 +41,9 @@ class Conta(ABC):
     @agencia.setter
     def agencia(self, numero: int):
         try:
-            if self._agencia is False:
-                self._agencia = numero
-            else:
-                raise AttributeError('Numero de Agencia ja atribuido')
+            self._agencia = numero
         except Exception as error:
-            print(f'Error: {error.__class__.__name__}\n\n{error}\n\n{error.args}')
+            raise error.args
 
     @property
     def num_conta(self):
@@ -45,13 +52,6 @@ class Conta(ABC):
     @num_conta.setter
     def num_conta(self, numero: str | int):
         try:
-            if self._num_conta is False:
-                self._num_conta = numero
-            else:
-                raise AttributeError('Numero de Conta ja atribuido')
+            self._num_conta = numero
         except Exception as error:
-            print(f'Error: {error.__class__.__name__}\n\n{error}\n\n{error.args}')
-
-    @abstractmethod
-    def sacar(self, valor: int | float):
-        ...
+            raise error.args
