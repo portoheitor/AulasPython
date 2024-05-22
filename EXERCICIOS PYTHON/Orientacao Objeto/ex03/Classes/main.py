@@ -37,3 +37,25 @@ Banco será responsável autenticar o cliente e as contas da seguinte maneira:
 Só será possível sacar se passar na autenticação do banco (descrita acima)
 Banco autentica por um método.
 """
+
+from Banco import Banco
+from Cliente import Cliente
+from Conta_Corrente import ContaCorrente
+from Conta_Poupanca import ContaPoupanca
+
+byt = Banco("BytBank")
+
+byt.vincular_cliente(Cliente("Heitor", 30,"123.123.123-01",ContaCorrente()))
+byt.vincular_cliente(Cliente("Arielle",29,"123.211.234-43",ContaPoupanca()))
+byt.vincular_cliente(Cliente("Maite",1,"123.334.234-43",ContaCorrente()))
+
+
+heitor = byt.manipular_conta_cliente("123.123.123-01")
+maite = byt.manipular_conta_cliente("123.334.234-43")
+arielle = byt.manipular_conta_cliente("123.211.234-43")
+
+print(f"NomeCliente: {heitor.nome}\nConta: {heitor.conta} -> Saldo {heitor.conta.saldo}")
+print("################")
+print(f"NomeCliente: {maite.nome}\nConta: {maite.conta} -> Saldo {maite.conta.saldo}")
+print("################")
+print(f"NomeCliente: {arielle.nome}\nConta: {arielle.conta} -> Saldo {arielle.conta.saldo}")
