@@ -129,7 +129,7 @@ celerybeat.pid
 # Environments
 .venv
 env/
-2_PYTHON_INTERMEDIARIO/venv/
+venv/Aulas_exercicios/2_PYTHON_INTERMEDIARIO/venv/
 ENV/
 env.bak/
 venv.bak/
