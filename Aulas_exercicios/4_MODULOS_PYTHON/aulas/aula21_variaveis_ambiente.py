@@ -15,10 +15,12 @@
 # https://pypi.org/project/python-dotenv/
 # OBS.: sempre lembre-se de criar um .env-example
 # import os
-#
-from dotenv import load_dotenv  # type
 
 import os
-load_dotenv()
 
-print(os.environ)
+# print(os.environ)
+
+print(os.getenv('BDUSER'))
+
+
+
